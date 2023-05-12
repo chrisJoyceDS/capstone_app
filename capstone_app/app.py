@@ -147,7 +147,7 @@ def main():
         st.write("Now let's see how if your signal continues to show up in these recommendations and compare!")
         rec_fig = viz_model_methods.visualize_signal(song_recs_full)
         st.pyplot(rec_fig)
-        break
+        
     # while user.access_token is not None:
     #     st.write("Sample of Playlist Tracks Will Load Here")
     #     user_playlist_tracks = get_methods.handler(user, "get_user_playlist_tracks")
