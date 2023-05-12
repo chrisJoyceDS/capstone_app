@@ -2,6 +2,7 @@ import spotipy
 import spotipy.oauth2 as oauth2
 import webbrowser
 import os
+import requests
 
 CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
@@ -27,13 +28,12 @@ class User:
         # Generate the authorization URL
         auth_url = auth.get_authorize_url()
 
-        # Open the URL in a web browser
-        webbrowser.open(auth_url)
+        # Make a request to the authorization URL
+        response = requests.get(auth_url)
 
-        # Get the access token
-        token_info = auth.get_access_token()
-        access_token = token_info['access_token']
-
+        # Parse the response to get the access token
+        access_token = response.json()['access_token']
+        
         # Create a Spotify client
         sp = spotipy.Spotify(auth=access_token)
         self.access_token = sp
