@@ -3,8 +3,6 @@ import spotipy.oauth2 as oauth2
 import webbrowser
 import os
 
-from dotenv import load_dotenv
-load_dotenv()
 CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
 REDIRECT_URI = os.getenv("SPOTIPY_REDIRECT_URI")
