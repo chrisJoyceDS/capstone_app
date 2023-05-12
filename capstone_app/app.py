@@ -6,6 +6,7 @@ import pickle
 import plotly
 import numpy as np
 import os
+import spotipy.oauth2 as oauth2
 
 CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
