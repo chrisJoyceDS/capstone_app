@@ -12,7 +12,7 @@ CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
 REDIRECT_URI = os.getenv("SPOTIPY_REDIRECT_URI")
 # create oauth object
-oauth = SpotifyOAuth(scope='user-library-read user-top-read playlist-read-private user-follow-read',
+oauth = oauth2.SpotifyOAuth(scope='user-library-read user-top-read playlist-read-private user-follow-read',
                      redirect_uri=uri,
                      client_id=cid,
                      client_secret=csecret)
