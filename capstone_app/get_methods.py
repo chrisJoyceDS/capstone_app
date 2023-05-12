@@ -23,12 +23,16 @@ def get_saved_tracks_df(sp):
     tracks = get_saved_tracks(sp)
     # turn flattened tracks into pandas df and return
     df = pd.DataFrame(flatten_tracks(tracks))
+    # get genres for artist if available
+    df = get_genres(sp, df)
     # get audio features for list of tracks
     audio_feats = get_track_audio_features(sp, df)
     # merge features with track metadata
     df = pd.merge(audio_feats, df, on='id', how='right')
     # add column to signify the user explicity interacted with the tracks
     df['user_liked'] = 1
+    # remove potential duplicate tracks
+    df.drop_duplicates(subset='id', inplace=True)
     return df
 
 
@@ -189,6 +193,27 @@ def get_track_audio_features(sp, df):
     # return df
     return audio_features_df
 
+def get_genres(sp, df):
+    """
+    Retrieves the user's saved or liked tracks from their profile and returns a list of JSON Track Objects.
+    :param sp: a spotipy.Spotify object with an access token for the user.
+    :return tracks: a list of returned JSON Track Objects from the spotipy api call.
+    """
+    # Use List Comprehension to get List of all track ids
+    artist_uris = [track for track in df['artist_uri']]
+    # set list for audio features
+    genres = []
+    # iterate through list of track ids 100 at a time to account for api call limit
+    for uri in artist_uris:
+        # get batch of audio features for each chunk of 100
+        artist = sp.artist(uri)
+        try:# add batch to audio features
+            genres.append({'artist_uri': artist['uri'], 'genres': artist['genres']})
+        except:
+            genres.append({'artist_uri': artist['uri'], 'genres': []})
+    df_genres = pd.DataFrame(genres)
+    df = pd.merge(df,df_genres, on='artist_uri', how='left')
+    return df
 
 ######################################################################################################
 # Handler Methods
