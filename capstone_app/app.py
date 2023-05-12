@@ -42,6 +42,7 @@ def main():
     if user.access_token is None:
         if st.button("Authenticate"):
             user.authenticate()
+            st.stop()
             st.write("Successfully authenticated with Spotify API.")
             st.write("To begin let's load your Saved Tracks and Tracks from Playlists you have Created and/or Actively Followed!")    
     else:
