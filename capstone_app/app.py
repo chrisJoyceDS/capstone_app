@@ -13,9 +13,9 @@ CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
 REDIRECT_URI = os.getenv("SPOTIPY_REDIRECT_URI")
 # create oauth object
 oauth = oauth2.SpotifyOAuth(scope='user-library-read user-top-read playlist-read-private user-follow-read',
-                     redirect_uri=uri,
-                     client_id=cid,
-                     client_secret=csecret)
+                     redirect_uri=REDIRECT_URI,
+                     client_id=CLIENT_ID,
+                     client_secret=CLIENT_SECRET)
 # Set up the page
 st.set_page_config(page_title="What's your Spotify Signal?", page_icon=":bar_chart:", layout="wide")
 
