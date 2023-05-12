@@ -3,6 +3,7 @@ import spotipy.oauth2 as oauth2
 import webbrowser
 import os
 import requests
+import streamlit as st
 
 CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
