@@ -110,6 +110,8 @@ def main():
                         st.write('Getting recommendations...')
                         tracks_for_model = get_methods.search_tracks(sp=st.session_state.access_token, tracks=df_tracks)
                         st.dataframe(tracks_for_model)
+                        tracks_fig = viz_model_methods.visualize_signal(tracks_for_model)
+                        st.pyplot(tracks_fig)
                         rec_songs_full, rec_songs = viz_model_methods.song_recommendations(tracks_for_model)
                         st.dataframe(rec_songs)
                         st.write("Let's Inspect our Rec Songs Audio Feature Distribution")
