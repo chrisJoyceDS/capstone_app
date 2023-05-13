@@ -77,18 +77,12 @@ def song_recommendations(df):
     # pull in pipeline from pickle
     with open('my_pipeline.pkl', 'rb') as f:
         pipeline = pickle.load(f)
-    # set explicit to integer values
-    df['explicit'] = df['explicit'].apply(lambda x: 1 if x==True else 0)
-    # set release date to year
-    df['release_year'] = pd.to_datetime(df['release_date'],errors='coerce').dt.year
-    # drop nulls if any
     if df['release_year'].isnull().sum() > 0:
         df.dropna(axis=0, inplace=True)
-    df['release_year']=df['release_year'].astype(int)
     # scaler for data transformation previousl fitted    
     scaler = pipeline.steps[0][1]
     # num columns that model was trained on
-    num_columns = df.select_dtypes(np.number).drop(columns=['user_liked']).columns
+    num_columns = df.select_dtypes(np.number).columns
     # calculate mean_vector to isolate a user's signal
     mean_vector = get_mean_vector(df[num_columns])
     # scale recommendation library
