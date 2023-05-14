@@ -10,6 +10,52 @@ from spotipy.exceptions import SpotifyException
 ######################################################################################################
 # Search for Track
 ######################################################################################################
+def search_genre_tracks(sp: object, artists):
+    tracks_to_flat = []
+    for i, genre in genres.iterrows():
+        q = f"genre:{genre['genre']}"
+        results = sp.search(q=q, type='track')
+        tracks_to_flat.extend(results['tracks']['items'])
+        
+    tracks_for_model = pd.DataFrame(flatten_tracks(tracks_to_flat))
+    tracks_for_model['explicit'] = tracks_for_model['explicit'].apply(lambda x: 1 if x==True else 0)
+    tracks_for_model['release_year'] = pd.to_datetime(tracks_for_model['release_date'],errors='coerce').dt.year
+    tracks_for_model['release_year']=tracks_for_model['release_year'].astype(int)
+    audio_for_model = get_track_audio_features(sp, tracks_for_model)
+    tracks_for_model = pd.merge(audio_for_model, tracks_for_model, on='id', how='right')
+    tracks_for_model = get_genres(sp, tracks_for_model)
+    tracks_for_model = tracks_for_model[['id', 'track_name', 'artist', 'artist_uri', 'album_uri', 'album',
+   'release_date', 'popularity', 'explicit', 'danceability', 'energy', 'key', 
+   'loudness', 'mode', 'speechiness', 'acousticness', 'instrumentalness', 
+   'liveness', 'valence', 'tempo', 'duration_ms', 'time_signature', 'release_year']]
+
+    return tracks_for_model
+
+
+
+def search_artist_tracks(sp: object, artists):
+    tracks_to_flat = []
+    
+    for i, artist in artists.iterrows():
+        q = f"artist:{artist['artist']}"
+        results = sp.search(q=q, type='artist')
+        top_tracks = sp.artist_top_tracks(artist_id=results['items'][0]['uri'],country='US')
+        tracks_to_flat.extend(track_object['tracks'])
+        
+    tracks_for_model = pd.DataFrame(flatten_tracks(tracks_to_flat))
+    tracks_for_model['explicit'] = tracks_for_model['explicit'].apply(lambda x: 1 if x==True else 0)
+    tracks_for_model['release_year'] = pd.to_datetime(tracks_for_model['release_date'],errors='coerce').dt.year
+    tracks_for_model['release_year']=tracks_for_model['release_year'].astype(int)
+    audio_for_model = get_track_audio_features(sp, tracks_for_model)
+    tracks_for_model = pd.merge(audio_for_model, tracks_for_model, on='id', how='right')
+    tracks_for_model = get_genres(sp, tracks_for_model)
+    tracks_for_model = tracks_for_model[['id', 'track_name', 'artist', 'artist_uri', 'album_uri', 'album',
+   'release_date', 'popularity', 'explicit', 'danceability', 'energy', 'key', 
+   'loudness', 'mode', 'speechiness', 'acousticness', 'instrumentalness', 
+   'liveness', 'valence', 'tempo', 'duration_ms', 'time_signature', 'release_year']]
+
+    return tracks_for_model
+
 
 def search_tracks(sp: object, tracks):
     tracks_to_flat = []

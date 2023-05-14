@@ -25,7 +25,6 @@ st.sidebar.info(
 CATEGORY_OPTIONS = ['Tracks', 'Genres', 'Artists']
 GENRES_LIST = []
 
-
 def onboarding():
     user_session = UserSession()
     return user_session
@@ -45,23 +44,53 @@ def main():
 
         # Genres
         genres_container = st.container()
+        
         with genres_container:
+            
             if category == 'Genres':
-                # Assuming you have a list of genres named `genres_list`
-                selected_genre = st.multiselect('Select genres', options=GENRES_LIST, key='genres')
+                # Check if 'user_artist_list' is already in the session state
+                if 'user_genres_list' not in st.session_state:
+                    st.session_state.user_genre_list = []
+
+                with st.form(key='genres_form'):
+                    genre = st.text_input('Enter a genre')
+                    submit_button = st.form_submit_button(label='Add Genre')
+                    if submit_button:
+                        st.session_state.user_artist_list.append(genre)
+                        st.write(f"Added Genre: {genre}")
+                        if len(st.session_state.user_artist_list) == 5:
+                            st.write("You've reached the maximum number of Genres. Proceeding with these genres...")
+                        # Display the list of artists
+                        st.table(pd.DataFrame(st.session_state.user_genre_list))
+
+                if len(st.session_state.user_genre_list) > 0:
+                    df_genres = pd.DataFrame(st.session_state.user_genre_list)
+                    st.table(df_genres)
+                    
+                if st.button('Click when ready to continue and get recommendations'):
+                        # Here you can call your function to get recommendations
+                        st.write('Getting recommendations...')
+                        tracks_for_model = get_methods.search_genre_tracks(sp=st.session_state.access_token, tracks=df_genres)
+                        st.dataframe(tracks_for_model)
+                        tracks_fig = viz_model_methods.visualize_signal(tracks_for_model)
+                        st.pyplot(tracks_fig)
+                        rec_songs_full, rec_songs = viz_model_methods.song_recommendations(tracks_for_model)
+                        st.dataframe(rec_songs)
+                        st.write("Let's Inspect our Rec Songs Audio Feature Distribution")
+                        rec_fig = viz_model_methods.visualize_signal(rec_songs_full)
+                        st.pyplot(rec_fig)
             else:
                 genres_container.empty()
-
+                
         # Artists
         artists_container = st.container()
         
         with artists_container:
-            
             if category == 'Artists':
                 # Check if 'user_artist_list' is already in the session state
                 if 'user_artist_list' not in st.session_state:
                     st.session_state.user_artist_list = []
-                    
+
                 with st.form(key='artists_form'):
                     artist_name = st.text_input('Enter an artist name')
                     submit_button = st.form_submit_button(label='Add Artist')
@@ -72,10 +101,23 @@ def main():
                             st.write("You've reached the maximum number of artists. Proceeding with these artists...")
                         # Display the list of artists
                         st.table(pd.DataFrame(st.session_state.user_artist_list))
-                        
+
                 if len(st.session_state.user_artist_list) > 0:
-                        df_artists = pd.DataFrame(st.session_state.user_artist_list)
-                        st.table(df_artists)
+                    df_artists = pd.DataFrame(st.session_state.user_artist_list)
+                    st.table(df_artists)
+                    
+                if st.button('Click when ready to continue and get recommendations'):
+                        # Here you can call your function to get recommendations
+                        st.write('Getting recommendations...')
+                        tracks_for_model = get_methods.search_artist_tracks(sp=st.session_state.access_token, tracks=df_artists)
+                        st.dataframe(tracks_for_model)
+                        tracks_fig = viz_model_methods.visualize_signal(tracks_for_model)
+                        st.pyplot(tracks_fig)
+                        rec_songs_full, rec_songs = viz_model_methods.song_recommendations(tracks_for_model)
+                        st.dataframe(rec_songs)
+                        st.write("Let's Inspect our Rec Songs Audio Feature Distribution")
+                        rec_fig = viz_model_methods.visualize_signal(rec_songs_full)
+                        st.pyplot(rec_fig)
             else:
                 artists_container.empty()
                 
