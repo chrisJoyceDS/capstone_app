@@ -31,7 +31,7 @@ def visualize_signal(df):
     # Add x-axis and y-axis labels
     ax.set_xlabel('Features')
     ax.set_ylabel('Values')
-    ax.set_title('Distribution of Similar Ranged Audio Features from All My Spotify Songs')
+    ax.set_title('Distribution of Similar Ranged Audio Features from Gathered Songs')
     # Set the x-tick labels to be the feature names
     ax.set_xticks(range(len(features)))
     ax.set_xticklabels(features)

@@ -105,12 +105,15 @@ def main():
                         # Here you can call your function to get recommendations
                         st.write('Getting recommendations...')
                         tracks_for_model = get_methods.search_genre_tracks(sp=st.session_state.access_token, genres=df_genres)
-                        st.dataframe(tracks_for_model)
-                        tracks_fig = viz_model_methods.visualize_signal(tracks_for_model)
+                        tracks_for_show = tracks_for_model[['artist','track_name','release_year']]
+                        st.write("Below is your current searches track library which we will use to generate recommendations")
+                        st.dataframe(tracks_for_show)
+                        st.write("Below is the audio profile of the current track library")
                         st.pyplot(tracks_fig)
                         rec_songs_full, rec_songs = viz_model_methods.song_recommendations(tracks_for_model)
+                        st.write("Below are your recommended songs based on your search criteria")
                         st.dataframe(rec_songs)
-                        st.write("Let's Inspect our Rec Songs Audio Feature Distribution")
+                        st.write("Let's check the audio profile of the recommended songs")
                         rec_fig = viz_model_methods.visualize_signal(rec_songs_full)
                         st.pyplot(rec_fig)
             else:
@@ -142,12 +145,15 @@ def main():
                         # Here you can call your function to get recommendations
                         st.write('Getting recommendations...')
                         tracks_for_model = get_methods.search_artist_tracks(sp=st.session_state.access_token, artists=df_artists)
-                        st.dataframe(tracks_for_model)
-                        tracks_fig = viz_model_methods.visualize_signal(tracks_for_model)
+                        tracks_for_show = tracks_for_model[['artist','track_name','release_year']]
+                        st.write("Below is your current searches track library which we will use to generate recommendations")
+                        st.dataframe(tracks_for_show)
+                        st.write("Below is the audio profile of the current track library")
                         st.pyplot(tracks_fig)
                         rec_songs_full, rec_songs = viz_model_methods.song_recommendations(tracks_for_model)
+                        st.write("Below are your recommended songs based on your search criteria")
                         st.dataframe(rec_songs)
-                        st.write("Let's Inspect our Rec Songs Audio Feature Distribution")
+                        st.write("Let's check the audio profile of the recommended songs")
                         rec_fig = viz_model_methods.visualize_signal(rec_songs_full)
                         st.pyplot(rec_fig)
             else:
@@ -184,12 +190,16 @@ def main():
                         # Here you can call your function to get recommendations
                         st.write('Getting recommendations...')
                         tracks_for_model = get_methods.search_tracks(sp=st.session_state.access_token, tracks=df_tracks)
-                        st.dataframe(tracks_for_model)
+                        tracks_for_show = tracks_for_model[['artist','track_name','release_year']]
+                        st.write("Below is your current searches track library which we will use to generate recommendations")
+                        st.dataframe(tracks_for_show)
                         tracks_fig = viz_model_methods.visualize_signal(tracks_for_model)
+                        st.write("Below is the audio profile of the current track library")
                         st.pyplot(tracks_fig)
                         rec_songs_full, rec_songs = viz_model_methods.song_recommendations(tracks_for_model)
+                        st.write("Below are your recommended songs based on your search criteria")
                         st.dataframe(rec_songs)
-                        st.write("Let's Inspect our Rec Songs Audio Feature Distribution")
+                        st.write("Let's check the audio profile of the recommended songs")
                         rec_fig = viz_model_methods.visualize_signal(rec_songs_full)
                         st.pyplot(rec_fig)
             else:
