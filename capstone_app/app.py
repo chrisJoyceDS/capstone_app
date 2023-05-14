@@ -9,7 +9,7 @@ import numpy as np
 import spotipy.oauth2 as oauth2
 
 # Set up the page
-st.set_page_config(page_title="What's your Spotify Signal?", page_icon=":bar_chart:", layout="wide")
+st.set_page_config(page_title="SoundSuggestionEngine", page_icon=":bar_chart:", layout="wide")
 
 # Title
 st.markdown(
