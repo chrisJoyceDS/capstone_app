@@ -41,7 +41,7 @@ def main():
 
     if st.session_state.access_token is not None:
         category = st.selectbox('Choose a category for recommendations', options=CATEGORY_OPTIONS, key='category')
-
+########################################################################################################        ######################################################################################################## 
         # Genres
         genres_container = st.container()
         
@@ -56,12 +56,10 @@ def main():
                     genre = st.text_input('Enter a genre')
                     submit_button = st.form_submit_button(label='Add Genre')
                     if submit_button:
-                        st.session_state.user_artist_list.append(genre)
+                        st.session_state.user_genre_list.append(genre)
                         st.write(f"Added Genre: {genre}")
-                        if len(st.session_state.user_artist_list) == 5:
+                        if len(st.session_state.user_genre_list) == 5:
                             st.write("You've reached the maximum number of Genres. Proceeding with these genres...")
-                        # Display the list of artists
-                        st.table(pd.DataFrame(st.session_state.user_genre_list))
 
                 if len(st.session_state.user_genre_list) > 0:
                     df_genres = pd.DataFrame(st.session_state.user_genre_list)
@@ -82,6 +80,8 @@ def main():
             else:
                 genres_container.empty()
                 
+########################################################################################################        ######################################################################################################## 
+
         # Artists
         artists_container = st.container()
         
@@ -99,8 +99,6 @@ def main():
                         st.write(f"Added artist: {artist_name}")
                         if len(st.session_state.user_artist_list) == 5:
                             st.write("You've reached the maximum number of artists. Proceeding with these artists...")
-                        # Display the list of artists
-                        st.table(pd.DataFrame(st.session_state.user_artist_list))
 
                 if len(st.session_state.user_artist_list) > 0:
                     df_artists = pd.DataFrame(st.session_state.user_artist_list)
@@ -121,6 +119,8 @@ def main():
             else:
                 artists_container.empty()
                 
+########################################################################################################        ######################################################################################################## 
+
         # Tracks
         tracks_container = st.container()
         
