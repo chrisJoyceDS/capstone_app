@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 import plotly.express as px
 import plotly.graph_objs as go
 from sklearn.cluster import KMeans
@@ -35,11 +36,15 @@ def visualize_signal(df):
     # Set the x-tick labels to be the feature names
     ax.set_xticks(range(len(features)))
     ax.set_xticklabels(features)
+    
+    # Add gridlines
+    ax.grid(axis='y', linestyle='--', alpha=0.6)
 
     # Add a legend for the different colors
     ax.legend(handles=handles, bbox_to_anchor=(1.02, 1), loc='upper left')
 
     return fig
+
 
 ######################################################################################################
 # Model Methods
@@ -72,21 +77,21 @@ def get_mean_vector(df):
 
 
 def song_recommendations(df):
-    # pull in recommendation library
-    recommend_library = pd.read_csv('recommend_library.csv')
+    # pull in rec library
+    recommend_library = pd.read_csv("https://myawsbucketdsi221.s3.us-east-2.amazonaws.com/rec_library_full.csv")
     # pull in pipeline from pickle
-    with open('my_pipeline.pkl', 'rb') as f:
+    with open('extended_library.pkl', 'rb') as f:
         pipeline = pickle.load(f)
     if df['release_year'].isnull().sum() > 0:
         df.dropna(axis=0, inplace=True)
-    # scaler for data transformation previousl fitted    
+    # scaler for data transformation previousl fitted 
     scaler = pipeline.steps[0][1]
     # num columns that model was trained on
     num_columns = df.select_dtypes(np.number).columns
     # calculate mean_vector to isolate a user's signal
     mean_vector = get_mean_vector(df[num_columns])
     # scale recommendation library
-    scaled_data = scaler.transform(df[num_columns])
+    scaled_data = scaler.transform(recommend_library[num_columns])
     # scale mean_vector and reshape to 2D Vector
     scaled_song_center = scaler.transform(mean_vector.reshape(1,-1))
     # calculate distances between the song center and the track recommendation library
@@ -97,5 +102,5 @@ def song_recommendations(df):
     # finally we convert it to a list all to get us the indices of the song library that make good recommendations
     index = list(np.argsort(distances)[:, :10][0])
     recommended_songs_full = recommend_library.iloc[index]
-    recommended_songs = recommended_songs_full[['track_name','artist','album','release_year']]
+    recommended_songs = recommended_songs_full[['track_name','artist','release_year']]
     return recommended_songs_full, recommended_songs

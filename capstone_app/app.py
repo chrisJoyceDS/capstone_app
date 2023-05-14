@@ -54,7 +54,7 @@ st.sidebar.info(
 
 st.sidebar.title("GitHub Repository")
 st.sidebar.info(
-    "[Link to the public GitHub repository](https://github.com/chrisJoyceDS/spotify-signal)."
+    "[Link to the public GitHub repository](https://github.com/chrisJoyceDS/capstone_app/tree/main/capstone_app)."
 )
 
 CATEGORY_OPTIONS = ['Tracks', 'Genres', 'Artists']
