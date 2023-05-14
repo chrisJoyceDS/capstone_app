@@ -11,6 +11,41 @@ import spotipy.oauth2 as oauth2
 # Set up the page
 st.set_page_config(page_title="What's your Spotify Signal?", page_icon=":bar_chart:", layout="wide")
 
+# Title
+st.markdown(
+    "<p class='big-font'>🎵 SoundSuggest 🎵</p>", 
+    unsafe_allow_html=True
+)
+# Problem Statement
+st.markdown(
+    """
+    <style>
+    .big-font {
+        font-size:50px !important;
+        color: #9F81F7; /* Spotify Green */
+        text-shadow: 2px 2px #D4AF37; /* Gold shadow */
+    }
+    .small-font {
+        font-size:20px !important;
+        color: #9F81F7;  /* Gold color */
+    }
+    </style>
+    """, 
+    unsafe_allow_html=True
+)
+
+st.markdown("""
+<div class="small-font">
+ 🎵 Discover Your Next Favorite Tune! 🎧</b> - where music discovery is powered by you! <br><br>
+</div>
+""", unsafe_allow_html=True)
+st.markdown("""
+Unlike other platforms, SoundSuggest doesn't just guess your music taste based on your past listening history. Instead, <b>YOU</b> are in the driver's seat. <br>
+Just tell us a few of your favorite tracks, artists, or genres, and watch our AI engine craft a personalized playlist built around your unique taste. <br>
+It's time to venture beyond the algorithm and discover a world of music that's truly <i>'tuned'</i> to you.
+</div>
+""", unsafe_allow_html=True)
+
 # Set up the sidebar
 st.sidebar.title("Project Authors")
 st.sidebar.info(
@@ -41,7 +76,7 @@ def main():
 
     if st.session_state.access_token is not None:
         category = st.selectbox('Choose a category for recommendations', options=CATEGORY_OPTIONS, key='category')
-########################################################################################################        ######################################################################################################## 
+
         # Genres
         genres_container = st.container()
         
@@ -50,19 +85,20 @@ def main():
             if category == 'Genres':
                 # Check if 'user_artist_list' is already in the session state
                 if 'user_genres_list' not in st.session_state:
-                    st.session_state.user_genre_list = []
+                    st.session_state.user_genres_list = []
 
                 with st.form(key='genres_form'):
                     genre = st.text_input('Enter a genre')
                     submit_button = st.form_submit_button(label='Add Genre')
                     if submit_button:
-                        st.session_state.user_genre_list.append(genre)
+                        st.session_state.user_genres_list.append({"genre":genre})
                         st.write(f"Added Genre: {genre}")
-                        if len(st.session_state.user_genre_list) == 5:
+                        if len(st.session_state.user_genres_list) == 5:
                             st.write("You've reached the maximum number of Genres. Proceeding with these genres...")
-
-                if len(st.session_state.user_genre_list) > 0:
-                    df_genres = pd.DataFrame(st.session_state.user_genre_list)
+                            
+                
+                if len(st.session_state.user_genres_list) > 0:
+                    df_genres = pd.DataFrame(st.session_state.user_genres_list)
                     st.table(df_genres)
                     
                 if st.button('Click when ready to continue and get recommendations'):
@@ -79,8 +115,6 @@ def main():
                         st.pyplot(rec_fig)
             else:
                 genres_container.empty()
-                
-########################################################################################################        ######################################################################################################## 
 
         # Artists
         artists_container = st.container()
@@ -95,7 +129,7 @@ def main():
                     artist_name = st.text_input('Enter an artist name')
                     submit_button = st.form_submit_button(label='Add Artist')
                     if submit_button:
-                        st.session_state.user_artist_list.append(artist_name)
+                        st.session_state.user_artist_list.append({"artist_name":artist_name})
                         st.write(f"Added artist: {artist_name}")
                         if len(st.session_state.user_artist_list) == 5:
                             st.write("You've reached the maximum number of artists. Proceeding with these artists...")
@@ -118,8 +152,7 @@ def main():
                         st.pyplot(rec_fig)
             else:
                 artists_container.empty()
-                
-########################################################################################################        ######################################################################################################## 
+                 
 
         # Tracks
         tracks_container = st.container()
@@ -163,25 +196,8 @@ def main():
                 tracks_container.empty()
     
 
-        # saved_tracks = get_methods.handler(user_session, identifier='get_saved_tracks')
-        # st.dataframe(saved_tracks).head()
-        # st.write("Below is a representation of your Spotify Music Signal!")
-        # st.write("Each violin represents a distribution of a different track audio feature. Where the violin is wider represents more records of those values, and the line in the middle represents the median of a given distribution.")
-        # saved_fig = viz_model_methods.visualize_signal(saved_tracks)
-        # st.pyplot(saved_fig)
-        # st.write("Let's get you your first 10 song recommendations based on this signal!")
-        # song_recs_full, song_recs = viz_model_methods.song_recommendations(saved_tracks)
-        # st.dataframe(song_recs)
-        # st.write("Now let's see how if your signal continues to show up in these recommendations and compare!")
-        # rec_fig = viz_model_methods.visualize_signal(song_recs_full)
-        # st.pyplot(rec_fig)
-    # while user.access_token is not None:
-    #     st.write("Sample of Playlist Tracks Will Load Here")
-    #     user_playlist_tracks = get_methods.handler(user, "get_user_playlist_tracks")
-    #     st.dataframe(user_playlist_tracks.loc[:,['track_name','artist','album','release_date','danceability']].head())
-    #     playlist_fig = data_viz_methods.visualize_signal(user_playlist_tracks)
-    #     st.pyplot(playlist_fig)
-    #     break
 
+        st.image("https://s3-us-east-2.amazonaws.com/myawsbucketdsi221/Spotify_Logo_RGB_Green.png", width=300, caption="Powered by Spotify")
+    
 if __name__ == "__main__":
     main()

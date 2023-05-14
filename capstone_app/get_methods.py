@@ -12,12 +12,13 @@ from spotipy.exceptions import SpotifyException
 ######################################################################################################
 def search_genre_tracks(sp: object, genres):
     tracks_to_flat = []
+    
     for i, genre in genres.iterrows():
         q = f"genre:{genre['genre']}"
         results = sp.search(q=q, type='track')
         tracks_to_flat.extend(results['tracks']['items'])
         
-    tracks_for_model = prepare_tracks_for_model(tracks_to_flat)
+    tracks_for_model = prepare_tracks_for_model(sp, tracks_to_flat)  
 
     return tracks_for_model
 
@@ -32,7 +33,7 @@ def search_artist_tracks(sp: object, artists):
         top_tracks = sp.artist_top_tracks(artist_id=results['artists']['items'][0]['uri'],country='US')
         tracks_to_flat.extend(top_tracks['tracks'])
         
-    tracks_for_model = prepare_tracks_for_model(tracks_to_flat)   
+    tracks_for_model = prepare_tracks_for_model(sp, tracks_to_flat)   
 
     return tracks_for_model
 
@@ -45,7 +46,7 @@ def search_tracks(sp: object, tracks):
         track_object = sp.track(results['tracks']['items'][0]['id'])
         tracks_to_flat.append(track_object)
         
-    tracks_for_model = prepare_tracks_for_model(tracks_to_flat)
+    tracks_for_model = prepare_tracks_for_model(sp, tracks_to_flat)
 
     return tracks_for_model
 
@@ -125,7 +126,7 @@ def get_genres(sp, df):
     return df
 
 
-def prepare_tracks_for_model(tracks_to_flat):
+def prepare_tracks_for_model(sp, tracks_to_flat):
     
     tracks_for_model = pd.DataFrame(flatten_tracks(tracks_to_flat))
     tracks_for_model['explicit'] = tracks_for_model['explicit'].apply(lambda x: 1 if x==True else 0)
