@@ -10,7 +10,7 @@ from spotipy.exceptions import SpotifyException
 ######################################################################################################
 # Search for Track
 ######################################################################################################
-def search_genre_tracks(sp: object, artists):
+def search_genre_tracks(sp: object, genres):
     tracks_to_flat = []
     for i, genre in genres.iterrows():
         q = f"genre:{genre['genre']}"

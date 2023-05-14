@@ -70,7 +70,7 @@ def main():
                 if st.button('Click when ready to continue and get recommendations'):
                         # Here you can call your function to get recommendations
                         st.write('Getting recommendations...')
-                        tracks_for_model = get_methods.search_genre_tracks(sp=st.session_state.access_token, tracks=df_genres)
+                        tracks_for_model = get_methods.search_genre_tracks(sp=st.session_state.access_token, genres=df_genres)
                         st.dataframe(tracks_for_model)
                         tracks_fig = viz_model_methods.visualize_signal(tracks_for_model)
                         st.pyplot(tracks_fig)
@@ -109,7 +109,7 @@ def main():
                 if st.button('Click when ready to continue and get recommendations'):
                         # Here you can call your function to get recommendations
                         st.write('Getting recommendations...')
-                        tracks_for_model = get_methods.search_artist_tracks(sp=st.session_state.access_token, tracks=df_artists)
+                        tracks_for_model = get_methods.search_artist_tracks(sp=st.session_state.access_token, artists=df_artists)
                         st.dataframe(tracks_for_model)
                         tracks_fig = viz_model_methods.visualize_signal(tracks_for_model)
                         st.pyplot(tracks_fig)
