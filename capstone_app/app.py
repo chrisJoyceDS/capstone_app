@@ -13,7 +13,7 @@ st.set_page_config(page_title="What's your Spotify Signal?", page_icon=":bar_cha
 
 # Title
 st.markdown(
-    "<p class='big-font'>🎵 SoundSuggest 🎵</p>", 
+    "<p class='big-font'>🎵 SoundSuggestEngine 🎵</p>", 
     unsafe_allow_html=True
 )
 # Problem Statement
@@ -40,7 +40,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 st.markdown("""
-Unlike other platforms, SoundSuggest doesn't just guess your music taste based on your past listening history. Instead, <b>YOU</b> are in the driver's seat. <br>
+Unlike other platforms, SoundSuggestEngine doesn't just guess your music taste based on your past listening history. Instead, <b>YOU</b> are in the driver's seat. <br>
 Just tell us a few of your favorite tracks, artists, or genres, and watch our AI engine craft a personalized playlist built around your unique taste. <br>
 It's time to venture beyond the algorithm and discover a world of music that's truly <i>'tuned'</i> to you.
 </div>
