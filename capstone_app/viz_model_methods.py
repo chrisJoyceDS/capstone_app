@@ -86,7 +86,7 @@ def song_recommendations(df):
     # calculate mean_vector to isolate a user's signal
     mean_vector = get_mean_vector(df[num_columns])
     # scale recommendation library
-    scaled_data = scaler.transform(df[num_columns])
+    scaled_data = scaler.transform(recommend_library[num_columns])
     # scale mean_vector and reshape to 2D Vector
     scaled_song_center = scaler.transform(mean_vector.reshape(1,-1))
     # calculate distances between the song center and the track recommendation library
